@@ -12,9 +12,23 @@ const (
 	Diamond
 )
 
+func (suit Suit) String() string {
+	switch suit {
+	case Spade:
+		return "♠️"
+	case Heart:
+		return "♥️"
+	case Club:
+		return "♣️"
+	case Diamond:
+		return "♦️"
+	default:
+		return ""
+	}
+}
+
 const (
-	One Rank = iota
-	Two
+	Two Rank = iota
 	Three
 	Four
 	Five
@@ -29,44 +43,55 @@ const (
 	Ace
 )
 
+func (rank Rank) String() string {
+	switch rank {
+	case Two:
+		return "2"
+	case Three:
+		return "3"
+	case Four:
+		return "4"
+	case Five:
+		return "5"
+	case Six:
+		return "6"
+	case Seven:
+		return "7"
+	case Eight:
+		return "8"
+	case Nine:
+		return "9"
+	case Ten:
+		return "10"
+	case Jack:
+		return "J"
+	case Queen:
+		return "Q"
+	case King:
+		return "K"
+	case Ace:
+		return "A"
+	default:
+		return ""
+	}
+}
+
 type Card struct {
 	Suit Suit
 	Rank Rank
 }
 
-var suitMap = map[Suit]string{
-	Spade:   "♠️",
-	Heart:   "♥️",
-	Club:    "♣️",
-	Diamond: "♦️",
-}
-
-var rankMap = map[Rank]string{
-	One:   "1",
-	Two:   "2",
-	Three: "3",
-	Four:  "4",
-	Five:  "5",
-	Six:   "6",
-	Seven: "7",
-	Eight: "8",
-	Nine:  "9",
-	Ten:   "10",
-	Jack:  "J",
-	Queen: "Q",
-	King:  "K",
-	Ace:   "A",
-}
-
 func (card Card) String() string {
-	return fmt.Sprintf("%v %v", rankMap[card.Rank], suitMap[card.Suit])
+	return fmt.Sprint(card.Rank, card.Suit)
 }
+
+type Hand []Card
 
 type Deck struct {
 	Cards [52]Card
 }
 
-func New() *Deck {
+func NewDeck() *Deck {
 	deck := &Deck{}
 
 	for suit := Suit(0); suit < 4; suit++ {
