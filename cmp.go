@@ -17,12 +17,6 @@ import "fmt"
 type RankCounter map[Rank]uint8
 type SuitCounter map[Suit]uint8
 
-// func (rc RankCounter) String() string {
-// 	for rank, count := range rc {
-// 		fmt.Println()
-// 	}
-// }
-
 func Compare(a []Card, b []Card) []Card {
 	rankCountsA := RankCounter{}
 	suitCountsA := SuitCounter{}
