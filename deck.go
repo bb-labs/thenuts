@@ -77,8 +77,8 @@ func (rank Rank) String() string {
 }
 
 type Card struct {
-	Suit Suit
 	Rank Rank
+	Suit Suit
 }
 
 func (card Card) String() string {
@@ -97,7 +97,7 @@ func NewDeck() *Deck {
 	for suit := Suit(0); suit < 4; suit++ {
 		for rank := Rank(0); rank < 13; rank++ {
 			index := uint8(suit)*13 + uint8(rank)
-			deck.Cards[index] = Card{suit, rank}
+			deck.Cards[index] = Card{rank, suit}
 		}
 	}
 

@@ -7,10 +7,15 @@ import (
 )
 
 func TestCompareHands(t *testing.T) {
-	deck := pokerface.NewDeck()
+	handA := pokerface.Hand{
+		pokerface.Card{Rank: pokerface.Ace, Suit: pokerface.Spade},
+		pokerface.Card{Rank: pokerface.Ace, Suit: pokerface.Club},
+	}
 
-	handA := pokerface.Hand{deck.Cards[2], deck.Cards[44]}
-	handB := pokerface.Hand{deck.Cards[32], deck.Cards[26]}
+	handB := pokerface.Hand{
+		pokerface.Card{Rank: pokerface.Ace, Suit: pokerface.Diamond},
+		pokerface.Card{Rank: pokerface.Ace, Suit: pokerface.Heart},
+	}
 
 	pokerface.Compare(handA, handB)
 }
