@@ -7,6 +7,38 @@ import (
 	"github.com/bb-labs/poker"
 )
 
+func TestFlush(t *testing.T) {
+	tests := []struct {
+		Hand    poker.Hand
+		IsFlush bool
+	}{
+		{
+			poker.Hand{
+				poker.Card{Rank: poker.Ace, Suit: poker.Spade},
+				poker.Card{Rank: poker.Two, Suit: poker.Spade},
+				poker.Card{Rank: poker.Eight, Suit: poker.Spade},
+				poker.Card{Rank: poker.Ten, Suit: poker.Spade},
+				poker.Card{Rank: poker.Five, Suit: poker.Spade},
+			},
+			true,
+		},
+		{
+			poker.Hand{
+				poker.Card{Rank: poker.Ace, Suit: poker.Heart},
+				poker.Card{Rank: poker.Two, Suit: poker.Spade},
+				poker.Card{Rank: poker.Eight, Suit: poker.Spade},
+				poker.Card{Rank: poker.Ten, Suit: poker.Spade},
+				poker.Card{Rank: poker.Five, Suit: poker.Spade},
+			},
+			false,
+		},
+	}
+
+	for _, test := range tests {
+		fmt.Println(test.Hand, poker.IsFlush(poker.NewCardCounter(test.Hand)))
+	}
+}
+
 func TestStraight(t *testing.T) {
 	tests := []struct {
 		Hand       poker.Hand

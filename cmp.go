@@ -14,6 +14,10 @@ import "fmt"
 // Four of a Kind
 // Straight Flush
 
+func IsFlush(counts CardCounter) bool {
+	return len(counts.Suits) == 1
+}
+
 func IsStraight(counts CardCounter) bool {
 	numCards := 0
 
