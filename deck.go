@@ -1,6 +1,9 @@
 package poker
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Suit uint8
 type Rank uint8
@@ -86,6 +89,14 @@ func (card Card) String() string {
 }
 
 type Hand []Card
+
+func (hand Hand) String() string {
+	cards := []string{}
+	for _, card := range hand {
+		cards = append(cards, card.String())
+	}
+	return fmt.Sprint(strings.Join(cards, " , "))
+}
 
 type Deck struct {
 	Cards [52]Card

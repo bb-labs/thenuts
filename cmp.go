@@ -15,24 +15,23 @@ import "fmt"
 // Straight Flush
 
 func IsStraight(counts CardCounter) bool {
-	if len(counts.Ranks) == 1 {
-		return true
-	}
-
 	numCards := 0
 
-	// Check low ace
 	_, hasLowAce := counts.Ranks[Ace]
-
 	if hasLowAce {
-		numCards += 1
+		numCards = 1
 	}
 
 	for rank := Two; rank <= Ace; rank++ {
-		_, hasRank := counts.Ranks[rank]
+		count, hasRank := counts.Ranks[rank]
+
+		// We can't have a straight if we're doubled up
+		if count > 1 {
+			return false
+		}
 
 		// We have a straight
-		if hasRank && (numCards+1) == len(counts.Ranks) {
+		if hasRank && (numCards+1) == 5 {
 			return true
 		}
 
@@ -50,12 +49,13 @@ func IsStraight(counts CardCounter) bool {
 		// We missed, but we have a low ace. Maybe the straight is royal
 		if hasLowAce && rank == Two {
 			numCards = 0
+			continue
 		}
 
 		return false
 	}
 
-	return true
+	return false
 }
 
 type CardCounter struct {
