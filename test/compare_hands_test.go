@@ -3,19 +3,19 @@ package test
 import (
 	"testing"
 
-	"github.com/bb-labs/pokerface"
+	"github.com/bb-labs/poker"
 )
 
 func TestCompareHands(t *testing.T) {
-	handA := pokerface.Hand{
-		pokerface.Card{Rank: pokerface.Ace, Suit: pokerface.Spade},
-		pokerface.Card{Rank: pokerface.Ace, Suit: pokerface.Club},
+	handA := poker.Hand{
+		poker.Card{Rank: poker.Ace, Suit: poker.Spade},
+		poker.Card{Rank: poker.Ace, Suit: poker.Club},
 	}
 
-	handB := pokerface.Hand{
-		pokerface.Card{Rank: pokerface.Ace, Suit: pokerface.Diamond},
-		pokerface.Card{Rank: pokerface.Ace, Suit: pokerface.Heart},
+	handB := poker.Hand{
+		poker.Card{Rank: poker.Ace, Suit: poker.Diamond},
+		poker.Card{Rank: poker.Ace, Suit: poker.Heart},
 	}
 
-	pokerface.Compare(handA, handB)
+	poker.Compare(handA, handB)
 }

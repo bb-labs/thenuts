@@ -4,14 +4,17 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/bb-labs/pokerface"
+	"github.com/bb-labs/poker"
 )
 
 func TestCreateDeck(t *testing.T) {
-	deck := pokerface.NewDeck()
+	deck := poker.NewDeck()
 
-	for _, card := range deck.Cards {
-		fmt.Println(card)
+	for i, card := range deck.Cards {
+		if i%13 == 0 {
+			fmt.Println()
+		}
+		fmt.Print(card, "  ")
 	}
-
+	fmt.Println()
 }

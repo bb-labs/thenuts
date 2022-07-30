@@ -1,4 +1,4 @@
-package pokerface
+package poker
 
 import "fmt"
 
