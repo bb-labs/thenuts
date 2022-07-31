@@ -111,6 +111,7 @@ func NewPokerHand(hand Hand) PokerHand {
 
 	if IsLowStraight(pokerHand.RankCounts) {
 		// Ace is counted as 1 in low straight
+		pokerHand.Cards = pokerHand.Cards.Copy()
 		pokerHand.Cards[4].Rank = LowAce
 		newCards := Hand{pokerHand.Cards[4]}
 		newCards = append(newCards, pokerHand.Cards[0:4]...)

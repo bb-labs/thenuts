@@ -9,6 +9,7 @@ import (
 
 func TestHandCounts(t *testing.T) {
 	deck := poker.NewDeck()
+	allHands := poker.ChooseN(deck, 5)
 
 	tests := []struct {
 		PokerHandType poker.PokerHandType
@@ -54,7 +55,6 @@ func TestHandCounts(t *testing.T) {
 
 	for _, test := range tests {
 		targetHands := []poker.Hand{}
-		allHands := poker.ChooseN(deck, 5)
 
 		for _, hand := range allHands {
 			pokerHand := poker.NewPokerHand(hand)
