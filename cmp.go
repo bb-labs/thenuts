@@ -1,6 +1,7 @@
 package poker
 
 import (
+	"math"
 	"sort"
 )
 
@@ -99,8 +100,8 @@ func (hand PokerHand) Evaluate() int {
 	value := 0
 
 	for i, card := range hand.Cards {
-		value += int(2 << i * card.Rank)
+		value += int(math.Pow(13, float64(i)) * float64(card.Rank))
 	}
 
-	return value << hand.Type
+	return value * int(math.Pow(13, float64(hand.Type)))
 }
