@@ -94,7 +94,7 @@ type Card struct {
 }
 
 func (card Card) String() string {
-	return fmt.Sprint(card.Rank, card.Suit)
+	return fmt.Sprint("{ ", card.Rank, card.Suit, "  }")
 }
 
 type Hand []Card
@@ -104,7 +104,15 @@ func (hand Hand) String() string {
 	for _, card := range hand {
 		cards = append(cards, card.String())
 	}
-	return fmt.Sprint(strings.Join(cards, " , "))
+	return fmt.Sprint("[", strings.Join(cards, " , "), "]\n")
+}
+
+func (hand Hand) Copy() Hand {
+	copy := Hand{}
+	for _, card := range hand {
+		copy = append(copy, Card{card.Rank, card.Suit})
+	}
+	return copy
 }
 
 type Deck [52]Card
@@ -112,10 +120,11 @@ type Deck [52]Card
 func NewDeck() Deck {
 	deck := Deck{}
 
-	for suit := Suit(0); suit < NumSuits; suit++ {
-		for rank := Rank(0); rank < NumRanks; rank++ {
-			index := int(suit)*NumRanks + int(rank)
+	index := 0
+	for suit := Spade; suit <= Diamond; suit++ {
+		for rank := Two; rank <= Ace; rank++ {
 			deck[index] = Card{rank, suit}
+			index++
 		}
 	}
 

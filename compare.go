@@ -19,6 +19,30 @@ const (
 	StraightFlush
 )
 
+func (pokerHandType PokerHandType) String() string {
+	switch pokerHandType {
+	case HighCard:
+		return "HighCard"
+	case Pair:
+		return "Pair"
+	case TwoPair:
+		return "TwoPair"
+	case ThreeOfAKind:
+		return "ThreeOfAKind"
+	case Straight:
+		return "Straight"
+	case Flush:
+		return "Flush"
+	case FullHouse:
+		return "FullHouse"
+	case FourOfAKind:
+		return "FourOfAKind"
+	case StraightFlush:
+		return "StraightFlush"
+	}
+	return ""
+}
+
 func GetPokerHandType(ranks RankCounter, suits SuitCounter, knownFlush bool) PokerHandType {
 	isFlush := len(suits) == 1
 	isStraight := IsStraight(ranks)
@@ -26,7 +50,7 @@ func GetPokerHandType(ranks RankCounter, suits SuitCounter, knownFlush bool) Pok
 	IsThreeOfKind := IsNOfAKind(ranks, 3)
 
 	// when tiebreaking two flushes, we skip these checks
-	if knownFlush {
+	if !knownFlush {
 		if isStraight && isFlush {
 			return StraightFlush
 		}

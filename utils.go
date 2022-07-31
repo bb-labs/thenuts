@@ -8,12 +8,12 @@ func ChooseN(deck Deck, n int) []Hand {
 
 	helper = func(nextIndex int) {
 		if len(choice) == n {
-			choices = append(choices, choice)
+			choices = append(choices, choice.Copy())
 			return
 		}
 		for i := nextIndex; i < len(deck); i++ {
 			choice = append(choice, deck[i])
-			helper(nextIndex + 1)
+			helper(i + 1)
 			choice = choice[:len(choice)-1]
 		}
 	}
