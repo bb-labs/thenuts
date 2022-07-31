@@ -5,6 +5,12 @@ import (
 	"strings"
 )
 
+const (
+	NumSuits     = 4
+	NumRanks     = 13
+	MaxRankValue = 14
+)
+
 type Suit int
 type Rank int
 
@@ -31,7 +37,8 @@ func (suit Suit) String() string {
 }
 
 const (
-	Two Rank = iota + 1
+	LowAce Rank = iota + 1
+	Two
 	Three
 	Four
 	Five
@@ -48,6 +55,8 @@ const (
 
 func (rank Rank) String() string {
 	switch rank {
+	case LowAce:
+		return "A"
 	case Two:
 		return "2"
 	case Three:
@@ -98,17 +107,15 @@ func (hand Hand) String() string {
 	return fmt.Sprint(strings.Join(cards, " , "))
 }
 
-type Deck struct {
-	Cards [52]Card
-}
+type Deck [52]Card
 
-func NewDeck() *Deck {
-	deck := &Deck{}
+func NewDeck() Deck {
+	deck := Deck{}
 
-	for suit := Suit(0); suit < 4; suit++ {
-		for rank := Rank(0); rank < 13; rank++ {
-			index := int(suit)*13 + int(rank)
-			deck.Cards[index] = Card{rank, suit}
+	for suit := Suit(0); suit < NumSuits; suit++ {
+		for rank := Rank(0); rank < NumRanks; rank++ {
+			index := int(suit)*NumRanks + int(rank)
+			deck[index] = Card{rank, suit}
 		}
 	}
 

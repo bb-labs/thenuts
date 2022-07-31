@@ -1,5 +1,38 @@
 package poker
 
+func ChooseN(deck Deck, n int) []Hand {
+	choices := []Hand{}
+	choice := Hand{}
+
+	var helper func(int)
+
+	helper = func(nextIndex int) {
+		if len(choice) == n {
+			choices = append(choices, choice)
+			return
+		}
+		for i := nextIndex; i < len(deck); i++ {
+			choice = append(choice, deck[i])
+			helper(nextIndex + 1)
+			choice = choice[:len(choice)-1]
+		}
+	}
+
+	helper(0)
+
+	return choices
+}
+
+func IsLowStraight(ranks RankCounter) bool {
+	_, hasAce := ranks[Ace]
+	_, hasTwo := ranks[Two]
+	_, hasThree := ranks[Three]
+	_, hasFour := ranks[Four]
+	_, hasFive := ranks[Five]
+
+	return hasAce && hasTwo && hasThree && hasFour && hasFive
+}
+
 func IsStraight(ranks RankCounter) bool {
 	if len(ranks) != 5 {
 		return false

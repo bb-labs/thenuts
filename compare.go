@@ -19,21 +19,25 @@ const (
 	StraightFlush
 )
 
-func GetPokerHandType(ranks RankCounter, suits SuitCounter) PokerHandType {
+func GetPokerHandType(ranks RankCounter, suits SuitCounter, knownFlush bool) PokerHandType {
 	isFlush := len(suits) == 1
 	isStraight := IsStraight(ranks)
 	IsPair := IsNOfAKind(ranks, 2)
 	IsThreeOfKind := IsNOfAKind(ranks, 3)
 
-	if isStraight && isFlush {
-		return StraightFlush
+	// when tiebreaking two flushes, we skip these checks
+	if knownFlush {
+		if isStraight && isFlush {
+			return StraightFlush
+		}
+		if isFlush {
+			return Flush
+		}
+		if isStraight {
+			return Straight
+		}
 	}
-	if isStraight {
-		return Straight
-	}
-	if isFlush {
-		return Flush
-	}
+
 	if IsNOfAKind(ranks, 4) {
 		return FourOfAKind
 	}
@@ -74,12 +78,20 @@ func NewPokerHand(hand Hand) PokerHand {
 
 	pokerHand := PokerHand{
 		hand,
-		GetPokerHandType(rankCounts, suitCounts),
+		GetPokerHandType(rankCounts, suitCounts, false /* not tiebreaking a flush */),
 		rankCounts,
 		suitCounts,
 	}
 
 	pokerHand.Sorted()
+
+	if IsLowStraight(pokerHand.RankCounts) {
+		// Ace is counted as 1 in low straight
+		pokerHand.Cards[4].Rank = LowAce
+		newCards := Hand{pokerHand.Cards[4]}
+		newCards = append(newCards, pokerHand.Cards[0:4]...)
+		pokerHand.Cards = newCards
+	}
 
 	return pokerHand
 }
@@ -100,8 +112,8 @@ func (hand PokerHand) Evaluate() int {
 	value := 0
 
 	for i, card := range hand.Cards {
-		value += int(math.Pow(13, float64(i)) * float64(card.Rank))
+		value += int(math.Pow(MaxRankValue, float64(i)) * float64(card.Rank))
 	}
 
-	return value * int(math.Pow(13, float64(hand.Type)))
+	return value * int(math.Pow(MaxRankValue, float64(hand.Type)))
 }

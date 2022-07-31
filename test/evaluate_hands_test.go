@@ -7,27 +7,27 @@ import (
 	"github.com/bb-labs/poker"
 )
 
-func TestThings(t *testing.T) {
+func TestEvaluateHands(t *testing.T) {
 	hand1 := poker.NewPokerHand(
 		poker.Hand{
 			{
-				poker.Ace,
+				poker.Five,
 				poker.Club,
 			},
 			{
-				poker.Queen,
+				poker.Four,
 				poker.Spade,
 			},
 			{
-				poker.King,
+				poker.Three,
 				poker.Spade,
 			},
 			{
-				poker.Jack,
+				poker.Two,
 				poker.Spade,
 			},
 			{
-				poker.Nine,
+				poker.Ace,
 				poker.Heart,
 			},
 		},
@@ -36,16 +36,8 @@ func TestThings(t *testing.T) {
 	hand2 := poker.NewPokerHand(
 		poker.Hand{
 			{
-				poker.Two,
-				poker.Club,
-			},
-			{
-				poker.Two,
-				poker.Spade,
-			},
-			{
 				poker.Three,
-				poker.Spade,
+				poker.Club,
 			},
 			{
 				poker.Four,
@@ -53,6 +45,14 @@ func TestThings(t *testing.T) {
 			},
 			{
 				poker.Five,
+				poker.Spade,
+			},
+			{
+				poker.Six,
+				poker.Spade,
+			},
+			{
+				poker.Seven,
 				poker.Heart,
 			},
 		},
