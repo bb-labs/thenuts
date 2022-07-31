@@ -31,7 +31,7 @@ func (suit Suit) String() string {
 }
 
 const (
-	Two Rank = iota
+	Two Rank = iota + 1
 	Three
 	Four
 	Five
