@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-type Suit uint8
-type Rank uint8
+type Suit int
+type Rank int
 
 const (
 	Spade Suit = iota
@@ -107,7 +107,7 @@ func NewDeck() *Deck {
 
 	for suit := Suit(0); suit < 4; suit++ {
 		for rank := Rank(0); rank < 13; rank++ {
-			index := uint8(suit)*13 + uint8(rank)
+			index := int(suit)*13 + int(rank)
 			deck.Cards[index] = Card{rank, suit}
 		}
 	}
