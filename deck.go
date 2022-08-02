@@ -104,7 +104,7 @@ func (hand Hand) String() string {
 	for _, card := range hand {
 		cards = append(cards, card.String())
 	}
-	return fmt.Sprint("[", strings.Join(cards, " , "), "]\n")
+	return fmt.Sprint("[", strings.Join(cards, " , "), "]")
 }
 
 func (hand Hand) Copy() Hand {
