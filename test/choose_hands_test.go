@@ -77,57 +77,61 @@ func TestSimpleOrdering(t *testing.T) {
 		PokerHandType        poker.PokerHandType
 		LesserPokerHandTypes []poker.PokerHandType
 	}{
-		{
-			poker.Pair,
-			[]poker.PokerHandType{
-				poker.HighCard,
-			},
-		},
-		{
-			poker.TwoPair,
-			[]poker.PokerHandType{
-				poker.HighCard,
-				poker.Pair,
-			},
-		},
-		{
-			poker.ThreeOfAKind,
-			[]poker.PokerHandType{poker.HighCard,
-				poker.Pair,
-				poker.TwoPair,
-			},
-		},
-		{
-			poker.Straight,
-			[]poker.PokerHandType{
-				poker.HighCard,
-				poker.Pair,
-				poker.TwoPair,
-				poker.ThreeOfAKind,
-			},
-		},
-		{
-			poker.Flush,
-			[]poker.PokerHandType{poker.HighCard,
-				poker.Pair,
-				poker.TwoPair,
-				poker.ThreeOfAKind,
-				poker.Straight,
-			},
-		},
-		{
-			poker.FullHouse,
-			[]poker.PokerHandType{poker.HighCard,
-				poker.Pair,
-				poker.TwoPair,
-				poker.ThreeOfAKind,
-				poker.Straight,
-				poker.Flush,
-			},
-		},
+		// {
+		// 	poker.Pair,
+		// 	[]poker.PokerHandType{
+		// 		poker.HighCard,
+		// 	},
+		// },
+		// {
+		// 	poker.TwoPair,
+		// 	[]poker.PokerHandType{
+		// 		poker.HighCard,
+		// 		poker.Pair,
+		// 	},
+		// },
+		// {
+		// 	poker.ThreeOfAKind,
+		// 	[]poker.PokerHandType{
+		// 		poker.HighCard,
+		// 		poker.Pair,
+		// 		poker.TwoPair,
+		// 	},
+		// },
+		// {
+		// 	poker.Straight,
+		// 	[]poker.PokerHandType{
+		// 		poker.HighCard,
+		// 		poker.Pair,
+		// 		poker.TwoPair,
+		// 		poker.ThreeOfAKind,
+		// 	},
+		// },
+		// {
+		// 	poker.Flush,
+		// 	[]poker.PokerHandType{
+		// 		poker.HighCard,
+		// 		poker.Pair,
+		// 		poker.TwoPair,
+		// 		poker.ThreeOfAKind,
+		// 		poker.Straight,
+		// 	},
+		// },
+		// {
+		// 	poker.FullHouse,
+		// 	[]poker.PokerHandType{
+		// 		poker.HighCard,
+		// 		poker.Pair,
+		// 		poker.TwoPair,
+		// 		poker.ThreeOfAKind,
+		// 		poker.Straight,
+		// 		poker.Flush,
+		// 	},
+		// },
 		{
 			poker.FourOfAKind,
-			[]poker.PokerHandType{poker.HighCard,
+			[]poker.PokerHandType{
+				poker.HighCard,
 				poker.Pair,
 				poker.TwoPair,
 				poker.ThreeOfAKind,
@@ -138,7 +142,8 @@ func TestSimpleOrdering(t *testing.T) {
 		},
 		{
 			poker.StraightFlush,
-			[]poker.PokerHandType{poker.HighCard,
+			[]poker.PokerHandType{
+				poker.HighCard,
 				poker.Pair,
 				poker.TwoPair,
 				poker.ThreeOfAKind,
@@ -150,7 +155,7 @@ func TestSimpleOrdering(t *testing.T) {
 		},
 	}
 
-	for _, test := range tests[:1] {
+	for _, test := range tests {
 		greaterHands := []poker.PokerHand{}
 		lesserHands := []poker.PokerHand{}
 
@@ -167,11 +172,11 @@ func TestSimpleOrdering(t *testing.T) {
 		for i, greaterHand := range greaterHands {
 			for _, lesserHand := range lesserHands {
 				if greaterHand.Evaluate() < lesserHand.Evaluate() {
-					fmt.Println("ERROR", greaterHand, lesserHand)
+					fmt.Println("ERROR", greaterHand.Cards, lesserHand.Cards)
 					return
 				}
 			}
-			fmt.Println(i)
+			fmt.Println(i, greaterHand.Cards)
 		}
 
 	}
