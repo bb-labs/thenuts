@@ -40,37 +40,22 @@ func IsStraight(ranks RankCounter) bool {
 
 	numCards := 0
 
-	_, hasLowAce := ranks[Ace]
-	if hasLowAce {
-		numCards = 1
-	}
-
 	for rank := Two; rank <= Ace; rank++ {
 		_, hasRank := ranks[rank]
 
-		// We have a straight
-		if hasRank && (numCards+1) == 5 {
-			return true
-		}
-
-		// Keep going, we haven't missed yet
 		if hasRank {
 			numCards += 1
+			if numCards == 5 {
+				return true
+			}
 			continue
 		}
 
-		// We missed, but we don't have any cards yet
 		if numCards == 0 {
 			continue
 		}
 
-		// We missed, but we have a low ace. Maybe the straight is royal
-		if hasLowAce && rank == Two {
-			numCards = 0
-			continue
-		}
-
-		return false
+		break
 	}
 
 	return false

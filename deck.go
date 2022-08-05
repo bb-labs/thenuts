@@ -6,9 +6,8 @@ import (
 )
 
 const (
-	NumSuits     = 4
-	NumRanks     = 13
-	MaxRankValue = 14
+	NumSuits = 4
+	NumRanks = 13
 )
 
 type Suit int

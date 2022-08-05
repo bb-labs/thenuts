@@ -5,6 +5,11 @@ import (
 	"sort"
 )
 
+const (
+	RankNumberBase = 15
+	SmallestHand   = 15 * 15 * 15 * 15
+)
+
 type PokerHandType int
 
 const (
@@ -17,6 +22,7 @@ const (
 	FullHouse
 	FourOfAKind
 	StraightFlush
+	UnknownHand
 )
 
 func (pokerHandType PokerHandType) String() string {
@@ -43,28 +49,26 @@ func (pokerHandType PokerHandType) String() string {
 	return ""
 }
 
-func GetPokerHandType(ranks RankCounter, suits SuitCounter, knownFlush bool) PokerHandType {
+func GetPokerHandType(ranks RankCounter, suits SuitCounter) PokerHandType {
 	isFlush := len(suits) == 1
-	isStraight := IsStraight(ranks)
-	IsPair := IsNOfAKind(ranks, 2)
-	IsThreeOfKind := IsNOfAKind(ranks, 3)
+	isStraight := IsStraight(ranks) || IsLowStraight(ranks)
 
-	// when tiebreaking two flushes, we skip these checks
-	if !knownFlush {
-		if isStraight && isFlush {
-			return StraightFlush
-		}
-		if isFlush {
-			return Flush
-		}
-		if isStraight {
-			return Straight
-		}
+	if isStraight && isFlush {
+		return StraightFlush
 	}
-
+	if isFlush {
+		return Flush
+	}
+	if isStraight {
+		return Straight
+	}
 	if IsNOfAKind(ranks, 4) {
 		return FourOfAKind
 	}
+
+	IsPair := IsNOfAKind(ranks, 2)
+	IsThreeOfKind := IsNOfAKind(ranks, 3)
+
 	if IsThreeOfKind && IsPair {
 		return FullHouse
 	}
@@ -102,20 +106,22 @@ func NewPokerHand(hand Hand) PokerHand {
 
 	pokerHand := PokerHand{
 		hand,
-		GetPokerHandType(rankCounts, suitCounts, false /* not tiebreaking a flush */),
+		GetPokerHandType(rankCounts, suitCounts),
 		rankCounts,
 		suitCounts,
 	}
 
 	pokerHand.Sorted()
 
+	// Ace is counted as 1 in low straight
 	if IsLowStraight(pokerHand.RankCounts) {
-		// Ace is counted as 1 in low straight
-		pokerHand.Cards = pokerHand.Cards.Copy()
-		pokerHand.Cards[4].Rank = LowAce
-		newCards := Hand{pokerHand.Cards[4]}
-		newCards = append(newCards, pokerHand.Cards[0:4]...)
-		pokerHand.Cards = newCards
+		pokerHand.Cards = Hand{
+			Card{LowAce, pokerHand.Cards[4].Suit},
+			pokerHand.Cards[0],
+			pokerHand.Cards[1],
+			pokerHand.Cards[2],
+			pokerHand.Cards[3],
+		}
 	}
 
 	return pokerHand
@@ -123,13 +129,16 @@ func NewPokerHand(hand Hand) PokerHand {
 
 func (hand PokerHand) Sorted() {
 	sort.Slice(hand.Cards, func(i, j int) bool {
+		handIRank := hand.Cards[i].Rank
+		handJRank := hand.Cards[j].Rank
+
 		// If the two cards have different rank counts, the one with the higher count is greater
-		if hand.RankCounts[hand.Cards[i].Rank] != hand.RankCounts[hand.Cards[j].Rank] {
-			return hand.RankCounts[hand.Cards[i].Rank] < hand.RankCounts[hand.Cards[j].Rank]
+		if hand.RankCounts[handIRank] != hand.RankCounts[handJRank] {
+			return hand.RankCounts[handIRank] < hand.RankCounts[handJRank]
 		}
 
 		// Same rank count, then lower rank means what you think it means
-		return hand.Cards[i].Rank < hand.Cards[j].Rank
+		return handIRank < handJRank
 	})
 }
 
@@ -137,8 +146,10 @@ func (hand PokerHand) Evaluate() int {
 	value := 0
 
 	for i, card := range hand.Cards {
-		value += int(math.Pow(MaxRankValue, float64(i)) * float64(card.Rank))
+		base := math.Pow(RankNumberBase, float64(i))
+		digit := float64(card.Rank)
+		value += int(base * digit)
 	}
 
-	return value * int(math.Pow(MaxRankValue, float64(hand.Type)))
+	return value * int(math.Pow(RankNumberBase, float64(hand.Type)))
 }
