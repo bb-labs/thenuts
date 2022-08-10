@@ -7,7 +7,6 @@ import (
 
 const (
 	RankNumberBase = 15
-	SmallestHand   = 15 * 15 * 15 * 15
 )
 
 type PokerHandType int

@@ -114,16 +114,14 @@ func (hand Hand) Copy() Hand {
 	return copy
 }
 
-type Deck [52]Card
+type Deck []Card
 
 func NewDeck() Deck {
 	deck := Deck{}
 
-	index := 0
-	for suit := Spade; suit <= Diamond; suit++ {
+	for _, suit := range []Suit{Spade, Club, Diamond, Heart} {
 		for rank := Two; rank <= Ace; rank++ {
-			deck[index] = Card{rank, suit}
-			index++
+			deck = append(deck, Card{rank, suit})
 		}
 	}
 

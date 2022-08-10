@@ -179,42 +179,5 @@ func TestSimpleHandComparisons(t *testing.T) {
 				t.Errorf("(%v) Hand %v; should not be greater than %v", test.PokerHandType, hand.Cards, lowestHand.Cards)
 			}
 		}
-
 	}
-}
-
-func TestFlushOrdering(t *testing.T) {
-	// deck := poker.NewDeck()
-	// allHands := poker.ChooseN(deck, 5)
-
-	// flushes := []poker.PokerHand{}
-
-	// for _, hand := range allHands {
-	// 	pokerHand := poker.NewPokerHand(hand)
-
-	// 	flushes = append(flushes, pokerHand)
-	// }
-
-	// sort.Slice(flushes, func(i, j int) bool {
-	// 	return flushes[i].Evaluate() < flushes[j].Evaluate()
-	// })
-
-	hand1 := poker.NewPokerHand(poker.Hand{
-		poker.Card{poker.Two, poker.Heart},
-		poker.Card{poker.Two, poker.Heart},
-		poker.Card{poker.Three, poker.Heart},
-		poker.Card{poker.Four, poker.Heart},
-		poker.Card{poker.Five, poker.Heart},
-	})
-
-	hand2 := poker.NewPokerHand(poker.Hand{
-		poker.Card{poker.Ace, poker.Heart},
-		poker.Card{poker.King, poker.Heart},
-		poker.Card{poker.Queen, poker.Heart},
-		poker.Card{poker.Jack, poker.Heart},
-		poker.Card{poker.Nine, poker.Heart},
-	})
-
-	fmt.Println(hand1.Cards, hand1.Evaluate())
-	fmt.Println(hand2.Cards, hand2.Evaluate())
 }
