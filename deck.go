@@ -55,33 +55,33 @@ const (
 func (rank Rank) String() string {
 	switch rank {
 	case LowAce:
-		return "A"
+		return "A "
 	case Two:
-		return "2"
+		return "2 "
 	case Three:
-		return "3"
+		return "3 "
 	case Four:
-		return "4"
+		return "4 "
 	case Five:
-		return "5"
+		return "5 "
 	case Six:
-		return "6"
+		return "6 "
 	case Seven:
-		return "7"
+		return "7 "
 	case Eight:
-		return "8"
+		return "8 "
 	case Nine:
-		return "9"
+		return "9 "
 	case Ten:
 		return "10"
 	case Jack:
-		return "J"
+		return "J "
 	case Queen:
-		return "Q"
+		return "Q "
 	case King:
-		return "K"
+		return "K "
 	case Ace:
-		return "A"
+		return "A "
 	default:
 		return ""
 	}
@@ -92,40 +92,52 @@ type Card struct {
 	Suit Suit
 }
 
-func (card Card) String() string {
+func (card *Card) String() string {
 	return fmt.Sprint("{ ", card.Rank, card.Suit, "  }")
 }
 
-type Hand []Card
+type Hand []*Card
 
-func (hand Hand) String() string {
+func (hand *Hand) String() string {
 	cards := []string{}
-	for _, card := range hand {
+	for _, card := range *hand {
 		cards = append(cards, card.String())
 	}
 	return fmt.Sprint("[", strings.Join(cards, " , "), "]")
 }
 
-func (hand Hand) Copy() Hand {
-	copy := Hand{}
-	for _, card := range hand {
-		copy = append(copy, Card{card.Rank, card.Suit})
-	}
-	return copy
-}
+type Deck map[*Card]bool
 
-type Deck [52]Card
-
-func NewDeck() Deck {
+func NewDeck() *Deck {
 	deck := Deck{}
 
-	index := 0
-	for suit := Spade; suit <= Diamond; suit++ {
+	for _, suit := range []Suit{Spade, Diamond, Heart, Club} {
 		for rank := Two; rank <= Ace; rank++ {
-			deck[index] = Card{rank, suit}
-			index++
+			deck[&Card{rank, suit}] = true
 		}
 	}
 
-	return deck
+	return &deck
+}
+
+func (deck Deck) Cards() []*Card {
+	cards := []*Card{}
+
+	for card := range deck {
+		cards = append(cards, card)
+	}
+
+	return cards
+}
+
+func (deck Deck) Remove(cardToRemove *Card) {
+	delete(deck, cardToRemove)
+}
+
+func (deck Deck) Draw() *Card {
+	for card := range deck {
+		delete(deck, card)
+		return card
+	}
+	return nil
 }

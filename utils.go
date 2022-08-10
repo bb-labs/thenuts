@@ -1,26 +1,69 @@
 package poker
 
-func ChooseN(deck Deck, n int) []Hand {
+func ChooseN(cards []*Card, n int) []Hand {
 	choices := []Hand{}
-	choice := Hand{}
+	choice := map[*Card]bool{}
 
 	var helper func(int)
 
 	helper = func(nextIndex int) {
+		chosenHand := Hand{}
 		if len(choice) == n {
-			choices = append(choices, choice.Copy())
+			for card := range choice {
+				chosenHand = append(chosenHand, card)
+			}
+			choices = append(choices, chosenHand)
 			return
 		}
-		for i := nextIndex; i < len(deck); i++ {
-			choice = append(choice, deck[i])
+
+		for i := nextIndex; i < len(cards); i++ {
+			card := cards[i]
+
+			choice[card] = true
 			helper(i + 1)
-			choice = choice[:len(choice)-1]
+			delete(choice, card)
 		}
 	}
 
 	helper(0)
 
 	return choices
+}
+
+func GetPokerHandType(ranks RankCounter, suits SuitCounter) PokerHandType {
+	isFlush := len(suits) == 1
+	isStraight := IsStraight(ranks) || IsLowStraight(ranks)
+
+	if isStraight && isFlush {
+		return StraightFlush
+	}
+	if isFlush {
+		return Flush
+	}
+	if isStraight {
+		return Straight
+	}
+	if IsNOfAKind(ranks, 4) {
+		return FourOfAKind
+	}
+
+	IsPair := IsNOfAKind(ranks, 2)
+	IsThreeOfKind := IsNOfAKind(ranks, 3)
+
+	if IsThreeOfKind && IsPair {
+		return FullHouse
+	}
+	if IsThreeOfKind {
+		return ThreeOfAKind
+	}
+	if IsTwoPair(ranks) {
+		return TwoPair
+	}
+	if IsPair {
+		return Pair
+	}
+
+	return HighCard
 }
 
 func IsLowStraight(ranks RankCounter) bool {

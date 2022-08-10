@@ -49,42 +49,6 @@ func (pokerHandType PokerHandType) String() string {
 	return ""
 }
 
-func GetPokerHandType(ranks RankCounter, suits SuitCounter) PokerHandType {
-	isFlush := len(suits) == 1
-	isStraight := IsStraight(ranks) || IsLowStraight(ranks)
-
-	if isStraight && isFlush {
-		return StraightFlush
-	}
-	if isFlush {
-		return Flush
-	}
-	if isStraight {
-		return Straight
-	}
-	if IsNOfAKind(ranks, 4) {
-		return FourOfAKind
-	}
-
-	IsPair := IsNOfAKind(ranks, 2)
-	IsThreeOfKind := IsNOfAKind(ranks, 3)
-
-	if IsThreeOfKind && IsPair {
-		return FullHouse
-	}
-	if IsThreeOfKind {
-		return ThreeOfAKind
-	}
-	if IsTwoPair(ranks) {
-		return TwoPair
-	}
-	if IsPair {
-		return Pair
-	}
-
-	return HighCard
-}
-
 type RankCounter map[Rank]int
 type SuitCounter map[Suit]int
 
@@ -116,7 +80,7 @@ func NewPokerHand(hand Hand) PokerHand {
 	// Ace is counted as 1 in low straight
 	if IsLowStraight(pokerHand.RankCounts) {
 		pokerHand.Cards = Hand{
-			Card{LowAce, pokerHand.Cards[4].Suit},
+			pokerHand.Cards[4],
 			pokerHand.Cards[0],
 			pokerHand.Cards[1],
 			pokerHand.Cards[2],

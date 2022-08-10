@@ -1,4 +1,4 @@
-module github.com/bb-labs/poker
+module github.com/bb-labs/thenuts
 
 go 1.18
 
